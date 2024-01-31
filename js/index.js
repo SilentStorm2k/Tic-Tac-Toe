@@ -11,3 +11,20 @@ const GameBoard = (function () {
     return {createGameBoard, getGameState};
 })();
 
+const cell = (function (i, j) {
+    const row = i;
+    const col = j;
+    const player = undefined;
+
+    const getValue = () => {
+        if (player)
+            return player.marker;
+        return null;
+    };
+    const assignValue = (p) => {
+        player = p;
+    };
+
+    return {getValue, assignValue};
+})();
+
