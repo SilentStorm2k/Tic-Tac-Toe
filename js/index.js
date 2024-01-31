@@ -11,7 +11,7 @@ const GameBoard = (function () {
     return {createGameBoard, getGameState};
 })();
 
-const cell = (function (i, j) {
+const Cell = (function (i, j) {
     const row = i;
     const col = j;
     const player = undefined;
@@ -28,3 +28,9 @@ const cell = (function (i, j) {
     return {getValue, assignValue};
 })();
 
+const Player = (function (name = "Computer", marker) {
+    const name = name;
+    const marker = marker;
+    const greetPlayer = () => console.log(`Hello ${this.name}`);    
+    return {name, marker, greetPlayer};
+})();
