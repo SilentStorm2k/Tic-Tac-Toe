@@ -1,6 +1,7 @@
-function GameBoard () {
+const GameBoard = (function () {
     const gameState = [];
     const createGameBoard = (size = 3) => {
+        gameState.length = 0;
         for (let i = 0; i < size; i++) {
             for (let j = 0; j < size; j++) {
                 gameState.push(Cell());
@@ -12,7 +13,7 @@ function GameBoard () {
         gameState.splice(i, 1, cell);
     };
     return {createGameBoard, getGameState, updateGameState};
-};
+})();
 
 function Cell () {
     let value = "";
@@ -38,10 +39,9 @@ c1.assignValue(p1.getMarker());
 console.log(c1.getValue());
 
 
-const g1 = GameBoard();
-g1.createGameBoard();
-let state = g1.getGameState();
-console.log(state[0].getValue(), "booba");
-g1.updateGameState(0, c1);
-state = g1.getGameState();
-console.log(state[0].getValue(), "cooba");
+GameBoard.createGameBoard();
+console.log(GameBoard.getGameState());
+GameBoard.updateGameState(0, c1);
+console.log(GameBoard.getGameState());
+GameBoard.createGameBoard(2);
+console.log(GameBoard.getGameState());
