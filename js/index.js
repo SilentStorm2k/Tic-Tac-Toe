@@ -28,9 +28,16 @@ const Cell = (function (i, j) {
     return {getValue, assignValue};
 })();
 
-const Player = (function (name = "Computer", marker) {
-    const name = name;
-    const marker = marker;
-    const greetPlayer = () => console.log(`Hello ${this.name}`);    
-    return {name, marker, greetPlayer};
-})();
+function Player (playerName, playerMarker) {
+    const name = playerName;
+    const marker = playerMarker;
+    const getMarker = () => marker;
+    const greetPlayer = () => console.log(`Hello ${name}`);    
+    return {getMarker, greetPlayer};
+};
+
+const p1 = Player("shivs", "x");
+p1.greetPlayer();
+console.log(p1.getMarker());
+
+
