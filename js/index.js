@@ -3,7 +3,7 @@ const GameBoard = (function () {
     const createGameBoard = (size = 3) => {
         for (let i = 0; i < size; i++) {
             for (let j = 0; j < size; j++) {
-                gameState.push(Cell(i, j));
+                gameState.push(Cell());
             }
         }
     }
@@ -11,22 +11,12 @@ const GameBoard = (function () {
     return {createGameBoard, getGameState};
 })();
 
-const Cell = (function (i, j) {
-    const row = i;
-    const col = j;
-    const player = undefined;
-
-    const getValue = () => {
-        if (player)
-            return player.marker;
-        return null;
-    };
-    const assignValue = (p) => {
-        player = p;
-    };
-
+function Cell () {
+    let value = "";
+    const getValue = () => value;
+    const assignValue = (val) => value = val;
     return {getValue, assignValue};
-})();
+};
 
 function Player (playerName, playerMarker) {
     const name = playerName;
@@ -37,7 +27,9 @@ function Player (playerName, playerMarker) {
 };
 
 const p1 = Player("shivs", "x");
-p1.greetPlayer();
-console.log(p1.getMarker());
+// p1.greetPlayer();
+// console.log(p1.getMarker());
 
-
+const c1 = Cell();
+c1.assignValue(p1.getMarker());
+console.log(c1.getValue());
