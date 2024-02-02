@@ -151,7 +151,29 @@ const Game = (function () {
     return {startGame};
 })();
 
-Game.startGame();
+const RenderOnScreen = (function () {
+    const createBoard = (size = 3) => {
+        const canvas = document.getElementById("canvas");
+        let row, cell;
+        for (let i = 0; i < size; i++) {
+            row = document.createElement('div');
+            row.id = "row" + i;
+            row.classList.add("row");
+            for (let j = 0; j < size; j++) {
+                cell = document.createElement('div');
+                cell.id = "cell" + parseInt(parseInt(i)*size + parseInt(j));
+                cell.classList.add("cell"); 
+                cell.textContent = "dummy";
+                row.appendChild(cell);
+            }
+            canvas.appendChild(row);
+        }
+    };
+    return {createBoard}
+})();
+
+// Game.startGame();
+RenderOnScreen.createBoard();
 
 // const p1 = Player("shivs", "x");
 // const p2 = Player("Comp", 'O');
