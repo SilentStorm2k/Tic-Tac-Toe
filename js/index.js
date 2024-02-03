@@ -1,11 +1,14 @@
 const GameBoard = (function () {
     const gameState = [];
+    const validChoices = [];
     let winner;
     const createGameBoard = (size = 3) => {
+        RenderOnScreen.createGameBoard(size);
         gameState.length = 0;
         for (let i = 0; i < size; i++) {
             for (let j = 0; j < size; j++) {
                 gameState.push(Cell());
+                validChoices.push(i*size + j);
             }
         }
     }
@@ -17,6 +20,8 @@ const GameBoard = (function () {
             return false;
         if (typeof gameState[i].getValue() == 'undefined' && i < gameState.length) {
             gameState.splice(i, 1, cell);
+            validChoices.splice(validChoices.indexOf(i), 1);
+            RenderOnScreen.updateGameState(i, cell);
             return true;
         }
         return false;   
@@ -26,7 +31,8 @@ const GameBoard = (function () {
         const rowCheck = checkRows(size);
         const colCheck = checkRows(size, flip = true);
         const diagCheck = checkDiagonals(size);
-        return rowCheck || colCheck || diagCheck;
+        const isDraw = checkIfDraw();
+        return rowCheck || colCheck || diagCheck || isDraw;
     }
 
     const getWinner = () => winner;
@@ -76,6 +82,16 @@ const GameBoard = (function () {
         return countInMainDiag == size || countInAntiDiag == size;
     };
 
+    const checkIfDraw = () => {
+        for (let state of gameState) {
+            if (typeof state == 'undefined')
+                return false;
+            else if (typeof state.getValue() == 'undefined')
+                return false; 
+        }
+        return true;
+    }
+
     const showGameState = () => {
         const size = Math.sqrt(gameState.length);
         let j = 0;
@@ -92,7 +108,10 @@ const GameBoard = (function () {
         }
         console.log(finalOutput);
     }
-    return {createGameBoard, getGameState, updateGameState, showGameState, isGameOver, getWinner};
+
+    const getValidChoices = () => validChoices;
+
+    return {createGameBoard, getGameState, updateGameState, showGameState, isGameOver, getWinner, getValidChoices};
 })();
 
 function Cell () {
@@ -117,63 +136,104 @@ function Player (playerName, playerMarker) {
 
 const Game = (function () {
     const startGame = () => {
-        GameBoard.createGameBoard();
-        const size = Math.sqrt(GameBoard.getGameState().length);
-        const player = Player(prompt("Enter your name: ", "John Doe"), "X");
-        const computer = Player("comp", "O");
-        const userCell = Cell(), compCell = Cell();
-        const validChoices = [];
-        for (let i = 0; i < GameBoard.getGameState().length; i++) 
-            validChoices.push(i);
-        let cellLocation = 0, row = 0; col = 0;
-        userCell.assignOwner(player);
-        compCell.assignOwner(computer);
-        GameBoard.showGameState();
-        while (!GameBoard.isGameOver()) {
-            row = prompt("Enter row", 0);
-            col = prompt("Enter col", 0);
-            cellLocation = parseInt(row)*size + parseInt(col);
-            while (!GameBoard.updateGameState(cellLocation, userCell)) {
-                row = prompt("Prev invalid, Enter row", 0);
-                col = prompt("Prev invalid, Enter col", 0);
-                cellLocation = parseInt(row)*size + parseInt(col);
-            }
-            validChoices.splice(validChoices.indexOf(cellLocation), 1);
-            console.log("USer choide = ", cellLocation);
-            cellLocation = Math.floor(Math.random()*validChoices.length);
-            GameBoard.updateGameState(validChoices[cellLocation], compCell);
-            console.log("Comp choide = ", validChoices[cellLocation]);
-            validChoices.splice(cellLocation, 1);
-            GameBoard.showGameState();
-        }
-        console.log(`Winner winner tofu dinner : ${GameBoard.getWinner()} has won the game`)
+        const size = 3;
+        GameBoard.createGameBoard(size);
+        // const player = Player(prompt("Enter your name: ", "John Doe"), "X");
+        // const computer = Player("comp", "O");
+        // const userCell = Cell(), compCell = Cell();
+        // const validChoices = [];
+        // for (let i = 0; i < GameBoard.getGameState().length; i++) 
+        //     validChoices.push(i);
+        // let cellLocation = 0, row = 0; col = 0;
+        // userCell.assignOwner(player);
+        // compCell.assignOwner(computer);
+        // GameBoard.showGameState();
+        // while (!GameBoard.isGameOver()) {
+        //     row = prompt("Enter row", 0);
+        //     col = prompt("Enter col", 0);
+        //     cellLocation = parseInt(row)*size + parseInt(col);
+        //     while (!GameBoard.updateGameState(cellLocation, userCell)) {
+        //         row = prompt("Prev invalid, Enter row", 0);
+        //         col = prompt("Prev invalid, Enter col", 0);
+        //         cellLocation = parseInt(row)*size + parseInt(col);
+        //     }
+        //     if (GameBoard.isGameOver())
+        //         break;
+        //     validChoices.splice(validChoices.indexOf(cellLocation), 1);
+        //     console.log("USer choide = ", cellLocation);
+        //     cellLocation = Math.floor(Math.random()*validChoices.length);
+        //     GameBoard.updateGameState(validChoices[cellLocation], compCell);
+        //     console.log("Comp choide = ", validChoices[cellLocation]);
+        //     validChoices.splice(cellLocation, 1);
+        //     GameBoard.showGameState();
+        // }
+        // GameBoard.showGameState();
+        // if (typeof GameBoard.getWinner() == 'undefined')
+        //     console.log(`Draw match`);
+        // else
+        //     console.log(`Winner winner tofu dinner : ${GameBoard.getWinner()} has won the game`);
     }
     return {startGame};
 })();
 
 const RenderOnScreen = (function () {
-    const createBoard = (size = 3) => {
-        const canvas = document.getElementById("canvas");
+    const canvas = document.getElementById("canvas");
+    const user = Player(prompt("Enter your name: ", "John Doe"), "X"), comp = Player("Computer", "O");
+    const userCell = Cell(), compCell = Cell();
+    userCell.assignOwner(user); 
+    compCell.assignOwner(comp);
+    const createGameBoard = (size = 3) => {
         let row, cell;
         for (let i = 0; i < size; i++) {
             row = document.createElement('div');
             row.id = "row" + i;
             row.classList.add("row");
             for (let j = 0; j < size; j++) {
-                cell = document.createElement('div');
+                cell = document.createElement('button');
                 cell.id = "cell" + parseInt(parseInt(i)*size + parseInt(j));
                 cell.classList.add("cell"); 
                 cell.textContent = "dummy";
+                cell.addEventListener("click", choiceTaken);
                 row.appendChild(cell);
             }
             canvas.appendChild(row);
         }
     };
-    return {createBoard}
+    function choiceTaken (event) {
+        event.target.removeEventListener("click", choiceTaken);
+        const location = parseInt(event.target.id.slice(4));
+        if (event.isTrusted) {
+            GameBoard.updateGameState(location, userCell);
+            if (GameBoard.isGameOver()) {
+                renderGameOver();
+                return;
+            }
+            const compAvailableChoices = GameBoard.getValidChoices();
+            const compChoice = compAvailableChoices[Math.floor(Math.random()*compAvailableChoices.length)];
+            document.getElementById('cell' + compChoice).click();
+        }
+        else {
+            GameBoard.updateGameState(location, compCell);   
+            if (GameBoard.isGameOver()) 
+                renderGameOver();
+        }
+    };
+    const renderGameOver = () => {
+        if (typeof GameBoard.getWinner() == 'undefined')
+            console.log(`Draw match`);
+        else
+            console.log(`Winner winner tofu dinner : ${GameBoard.getWinner()} has won the game`);
+    };
+
+    const updateGameState = (i, cell) => {
+        const element = document.getElementById("cell" + i);
+        element.textContent = cell.getValue();
+    };
+    return {createGameBoard, updateGameState}
 })();
 
-// Game.startGame();
-RenderOnScreen.createBoard();
+Game.startGame();   
+// RenderOnScreen.createGameBoard();
 
 // const p1 = Player("shivs", "x");
 // const p2 = Player("Comp", 'O');
