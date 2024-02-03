@@ -138,40 +138,6 @@ const Game = (function () {
     const startGame = () => {
         const size = 3;
         GameBoard.createGameBoard(size);
-        // const player = Player(prompt("Enter your name: ", "John Doe"), "X");
-        // const computer = Player("comp", "O");
-        // const userCell = Cell(), compCell = Cell();
-        // const validChoices = [];
-        // for (let i = 0; i < GameBoard.getGameState().length; i++) 
-        //     validChoices.push(i);
-        // let cellLocation = 0, row = 0; col = 0;
-        // userCell.assignOwner(player);
-        // compCell.assignOwner(computer);
-        // GameBoard.showGameState();
-        // while (!GameBoard.isGameOver()) {
-        //     row = prompt("Enter row", 0);
-        //     col = prompt("Enter col", 0);
-        //     cellLocation = parseInt(row)*size + parseInt(col);
-        //     while (!GameBoard.updateGameState(cellLocation, userCell)) {
-        //         row = prompt("Prev invalid, Enter row", 0);
-        //         col = prompt("Prev invalid, Enter col", 0);
-        //         cellLocation = parseInt(row)*size + parseInt(col);
-        //     }
-        //     if (GameBoard.isGameOver())
-        //         break;
-        //     validChoices.splice(validChoices.indexOf(cellLocation), 1);
-        //     console.log("USer choide = ", cellLocation);
-        //     cellLocation = Math.floor(Math.random()*validChoices.length);
-        //     GameBoard.updateGameState(validChoices[cellLocation], compCell);
-        //     console.log("Comp choide = ", validChoices[cellLocation]);
-        //     validChoices.splice(cellLocation, 1);
-        //     GameBoard.showGameState();
-        // }
-        // GameBoard.showGameState();
-        // if (typeof GameBoard.getWinner() == 'undefined')
-        //     console.log(`Draw match`);
-        // else
-        //     console.log(`Winner winner tofu dinner : ${GameBoard.getWinner()} has won the game`);
     }
     return {startGame};
 })();
@@ -232,36 +198,4 @@ const RenderOnScreen = (function () {
     return {createGameBoard, updateGameState}
 })();
 
-Game.startGame();   
-// RenderOnScreen.createGameBoard();
-
-// const p1 = Player("shivs", "x");
-// const p2 = Player("Comp", 'O');
-// // p1.greetPlayer();
-// // console.log(p1.getMarker());
-
-// const c1 = Cell();
-// c1.assignOwner(p1);
-// console.log(c1.getValue());
-
-// const c2 = Cell();
-// c2.assignOwner(p2);
-
-
-// GameBoard.createGameBoard();
-// // console.log(GameBoard.getGameState());
-
-// GameBoard.updateGameState(0, c1);
-// GameBoard.updateGameState(1, c2);
-// GameBoard.updateGameState(2, c1);
-// GameBoard.updateGameState(3, c1);
-// GameBoard.updateGameState(4, c1);
-// GameBoard.updateGameState(5, c2);
-// GameBoard.updateGameState(6, c2);
-// GameBoard.updateGameState(7, c2);
-// console.log(GameBoard.updateGameState(8, c1));
-// console.log(GameBoard.updateGameState(8, c2));
-// // console.log(GameBoard.getGameState());
-// GameBoard.showGameState();
-// console.log(GameBoard.isGameOver());
-// console.log("winner = ", GameBoard.getWinner())
+Game.startGame();
