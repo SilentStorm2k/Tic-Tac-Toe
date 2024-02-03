@@ -216,7 +216,14 @@ const RenderOnScreen = (function () {
 
     const updateGameState = (i, cell) => {
         const element = document.getElementById("cell" + i);
-        element.textContent = cell.getValue();
+        switch (cell.getValue()) {
+            case "X":
+                element.style.background = "center/50% no-repeat url(images/x.png)";
+                break;
+            case "O":
+                element.style.background = "center/50% no-repeat url(images/o.png)";
+                break;
+        }
     };
     return {createGameBoard, updateGameState}
 })();
