@@ -128,12 +128,13 @@ function Cell () {
 };
 
 function Player (playerName, playerMarker) {
-    const name = playerName;
+    let name = playerName;
     const marker = playerMarker;
     const getMarker = () => marker;
     const getPlayer = () => name;
+    const changePlayerName = (newName) => name = newName;
     const greetPlayer = () => console.log(`Hello ${name}`);    
-    return {getMarker, getPlayer, greetPlayer};
+    return {getMarker, getPlayer, changePlayerName, greetPlayer};
 };
 
 const Game = (function () {
@@ -147,10 +148,15 @@ const Game = (function () {
 const RenderOnScreen = (function () {
     const canvas = document.getElementById("canvas");
     const canvasContainer = document.querySelector(".content");
-    const user = Player(prompt("Enter your name: ", "John Doe"), "X"), comp = Player("Computer", "O");
+    const userName = document.getElementById("userName");
+    const user = Player("You the user", "X"), comp = Player("Computer", "O");
     const userCell = Cell(), compCell = Cell();
     userCell.assignOwner(user); 
     compCell.assignOwner(comp);
+    userName.addEventListener("keydown", function(e) {
+        user.changePlayerName(e.target.value + e.key);
+        userCell.assignOwner(user);
+    });
     const createGameBoard = (size = 3) => {
         while (canvas.firstChild)
             canvas.removeChild(canvas.firstChild);
