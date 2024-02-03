@@ -5,6 +5,8 @@ const GameBoard = (function () {
     const createGameBoard = (size = 3) => {
         RenderOnScreen.createGameBoard(size);
         gameState.length = 0;
+        validChoices.length = 0;
+        winner = undefined;
         for (let i = 0; i < size; i++) {
             for (let j = 0; j < size; j++) {
                 gameState.push(Cell());
@@ -144,11 +146,14 @@ const Game = (function () {
 
 const RenderOnScreen = (function () {
     const canvas = document.getElementById("canvas");
+    const canvasContainer = document.querySelector(".content");
     const user = Player(prompt("Enter your name: ", "John Doe"), "X"), comp = Player("Computer", "O");
     const userCell = Cell(), compCell = Cell();
     userCell.assignOwner(user); 
     compCell.assignOwner(comp);
     const createGameBoard = (size = 3) => {
+        while (canvas.firstChild)
+            canvas.removeChild(canvas.firstChild);
         let row, cell;
         for (let i = 0; i < size; i++) {
             row = document.createElement('div');
@@ -158,7 +163,7 @@ const RenderOnScreen = (function () {
                 cell = document.createElement('button');
                 cell.id = "cell" + parseInt(parseInt(i)*size + parseInt(j));
                 cell.classList.add("cell"); 
-                cell.textContent = "dummy";
+                cell.textContent = "";
                 cell.addEventListener("click", choiceTaken);
                 row.appendChild(cell);
             }
@@ -185,10 +190,15 @@ const RenderOnScreen = (function () {
         }
     };
     const renderGameOver = () => {
+        const allCells = document.querySelectorAll('.cell');
+        const declareResult = document.createElement('p');
+        canvasContainer.appendChild(declareResult);
+        for (let i = 0; i < allCells.length; i++) 
+            allCells[i].removeEventListener("click", choiceTaken);
         if (typeof GameBoard.getWinner() == 'undefined')
-            console.log(`Draw match`);
+            declareResult.textContent = `Draw match`;
         else
-            console.log(`Winner winner tofu dinner : ${GameBoard.getWinner()} has won the game`);
+            declareResult.textContent = `Winner winner tofu dinner : ${GameBoard.getWinner()} has won the game`;
     };
 
     const updateGameState = (i, cell) => {
