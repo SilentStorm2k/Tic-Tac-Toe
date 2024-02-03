@@ -385,6 +385,7 @@ template {
   --color--4: rgb(238, 153, 160);
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   font-size: large;
+  color: var(--color--2);
 }
 
 html,
@@ -554,4 +555,10 @@ input {
     border-color: #3b49df;
     box-shadow: 1px 1px 0 #3b49df;
   }
+}
+
+input,
+dialog,
+button {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
