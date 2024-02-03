@@ -383,6 +383,8 @@ template {
   --color--2: rgb(53, 11, 64);
   --color--3: rgb(173, 108, 128);
   --color--4: rgb(238, 153, 160);
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: large;
 }
 
 html,
@@ -390,10 +392,6 @@ body {
   height: 100%;
   margin: 0;
   box-sizing: border-box;
-}
-
-* {
-  border: 1px solid red;
 }
 
 body {
@@ -407,6 +405,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 2rem;
   background-color: var(--color--4);
 }
 
@@ -454,7 +453,8 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px
+  gap: 12px;
+  font-size: small;
 }
 
 a {
@@ -467,4 +467,91 @@ a {
 a:hover {
   transform: scaleX(-1);
   background-image: url(../images/github-logo-dark.png);
+}
+
+dialog[open] {
+  animation: fadeIn 1.5s ease-in forwards;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+  overflow: hidden;
+}
+
+::backdrop {
+  backdrop-filter: blur(2px);
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+    background-color: var(--color--1);
+  }
+}
+
+
+.reset {
+  color: var(--color--2);
+  transition: all 0.5s;
+  position: relative;
+  padding: 1rem;
+}
+
+.reset::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: all 0.3s;
+}
+
+.reset:hover::before {
+  opacity: 0;
+  transform: scale(0.5, 0.5);
+}
+
+.reset::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0;
+  transition: all 0.3s;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transform: scale(1.2, 1.2);
+}
+
+.reset:hover::after {
+  opacity: 1;
+  transform: scale(1, 1);
+}
+
+input {
+  border-radius: 5px;
+  background: rgb(249, 250, 250);
+  border: 1px solid rgb(181, 189, 196);
+  font-size: 16px;
+  height: 30px;
+  line-height: 24px;
+  padding: 7px 8px;
+  color: rgb(8, 9, 10);
+  box-shadow: none;
+
+  :focus {
+    background-color: #fff;
+    border-color: #3b49df;
+    box-shadow: 1px 1px 0 #3b49df;
+  }
 }
