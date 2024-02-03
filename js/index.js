@@ -140,7 +140,9 @@ function Player (playerName, playerMarker) {
 const Game = (function () {
     const startGame = () => {
         const size = 3;
+        const dialogueBox = document.querySelector('dialog');
         GameBoard.createGameBoard(size);
+        dialogueBox.close();
     }
     return {startGame};
 })();
@@ -157,6 +159,10 @@ const RenderOnScreen = (function () {
         user.changePlayerName(e.target.value + e.key);
         userCell.assignOwner(user);
     });
+    const resetButton = document.querySelectorAll('.reset');
+    for (let button of resetButton) {
+        button.addEventListener("click", Game.startGame);
+    };
     const createGameBoard = (size = 3) => {
         while (canvas.firstChild)
             canvas.removeChild(canvas.firstChild);
@@ -196,9 +202,10 @@ const RenderOnScreen = (function () {
         }
     };
     const renderGameOver = () => {
+        const dialogueBox = document.querySelector('dialog');
         const allCells = document.querySelectorAll('.cell');
-        const declareResult = document.createElement('p');
-        canvasContainer.appendChild(declareResult);
+        const declareResult = document.getElementById('result');
+        dialogueBox.showModal();
         for (let i = 0; i < allCells.length; i++) 
             allCells[i].removeEventListener("click", choiceTaken);
         if (typeof GameBoard.getWinner() == 'undefined')
